@@ -27,20 +27,22 @@ class PhotoTakingHelper: NSObject {
     var callback: PhotoTakingHelperCallback // function to be called after user receives an image
     var imagePickerController: UIImagePickerController?
     
-    init(viewController: UIViewController, callback: PhotoTakingHelperCallback)
-    {
-        self.viewController = viewController
-        self.callback = callback
-        super.init()
-        showPhotoSourceSelection() // in initializer, therefor will be called as soon as photo button pressed (create an object of PhotoTakingHelper)
-    }
-    
     func showImagePickerController(sourceType: UIImagePickerControllerSourceType)
     {
         imagePickerController = UIImagePickerController()
         imagePickerController!.sourceType = sourceType
         imagePickerController!.delegate = self // imagePickerController is now the delegate of the UIImageViewController- it will display picture
         self.viewController.presentViewController(imagePickerController!, animated: true, completion: nil)
+    }
+    
+    
+    
+    init(viewController: UIViewController, callback: PhotoTakingHelperCallback)
+    {
+        self.viewController = viewController
+        self.callback = callback
+        super.init()
+        showPhotoSourceSelection() // in initializer, therefor will be called as soon as photo button pressed (create an object of PhotoTakingHelper)
     }
     
     
@@ -67,23 +69,24 @@ class PhotoTakingHelper: NSObject {
             alertController.addAction(cameraAction)
         }
 
-        
       viewController.presentViewController(alertController, animated: true, completion: nil)
        
 }
-   
+    
 }
 
 //MARK: Extension (are always outside of class definition
 
 extension PhotoTakingHelper: UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
-    func imagePickerControllerDidCancel(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject: AnyObject]!) {
-    viewController.dismissViewControllerAnimated(false, completion:nil)
+    //: editingInfo is a dictionary
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject: AnyObject]!){
+    viewController.dismissViewControllerAnimated(false, completion: nil)
+        
     callback(image)
     
     }
-    
+
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         viewController.dismissViewControllerAnimated(true, completion: nil)//dismissing cancel button as we are now delegate of the imagePickerViewController
         
@@ -92,7 +95,8 @@ extension PhotoTakingHelper: UIImagePickerControllerDelegate, UINavigationContro
 
 
 
-
+//: Things I will review
+//: external names // dictionaries // closures // callbacks
 
 
 

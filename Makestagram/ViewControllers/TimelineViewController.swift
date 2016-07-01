@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Parse
 
 class TimelineViewController: UIViewController {
 
@@ -27,12 +27,31 @@ class TimelineViewController: UIViewController {
 
 // MARK: Tab Bar Delegate
     
-extension TimelineViewController: UITabBarControllerDelegate
+extension TimelineViewController: UITabBarControllerDelegate // the TimeLineViewController is the delegate of the TabBarController
 {
     
     func takePhoto()
     {
-        photoTakingHelper = PhotoTakingHelper(viewController: self.tabBarController!, callback: {(image: UIImage?) in print("received a callback")})
+        photoTakingHelper = PhotoTakingHelper(viewController: self.tabBarController!, callback: {(image: UIImage?) in
+            let post = Post()
+            post.image = image
+            post.uploadPost()
+            
+/* the code above replaced this code after the "Post" custom class was created and linked to swift
+             
+             if let image = image {
+                let imageData = UIImageJPEGRepresentation(image, 0.8)! // returning image as jpg, passing a compression constant because a PFFile takes in NSData (jpg)
+             
+                let imageFile = PFFile(name: "image.jpg", data: imageData )! // A PFFile takes a name and image data
+             
+                print(imageFile.name) //- test if code works
+             
+                let post = PFObject(className: "Post") // creating a post from the post class
+                post["imageFile"] = imageFile // the post called imageFile is being filled with the file in which we passed the image
+                post.saveInBackground() // Saving image
+ */
+            
+        })
     }
      // Keyword "in" marks the begining of the code in a closure; closure will be called after PhotoHelper has received an image
         

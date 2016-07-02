@@ -11,6 +11,7 @@ import Parse
 
 class TimelineViewController: UIViewController {
 
+   @IBOutlet weak var tableView: UITableView! // Outlet to access table view from code
     var photoTakingHelper: PhotoTakingHelper? // creating a photoTaking helper object for when cam button is tapped
     
     override func viewDidLoad() {

@@ -10,6 +10,10 @@ import UIKit
 import Parse
 
 // Parse custom classes need 1) to inherit from PFObject, and 2) to implement the PFSubclassing protocol
+// The post class extends PFObject so that we can use . to access our variables
+//PFuser and PFFiles are specific to Parse 
+//PFUser and PFFile are types
+
 class Post: PFObject, PFSubclassing {
     
     // Properties to be accessed in this Parse class
@@ -18,7 +22,7 @@ class Post: PFObject, PFSubclassing {
     @NSManaged var user: PFUser?
     var image: UIImage?
     
-    var photoUploadTask: UIBackgroundTaskIdentifier?
+    var photoUploadTask: UIBackgroundTaskIdentifier? // creating a background task to request a long running background task
     
     // MARK: PFSubclassing Protocol
     
@@ -75,12 +79,12 @@ func uploadPost() {
         // 1
         photoUploadTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler { () -> Void in
             UIApplication.sharedApplication().endBackgroundTask(self.photoUploadTask!)
-        }
+        } // passing a closure in case the expiration time is up, calling UIApplication.sharedApplication().endBackgroundTask to make sure the app doesnt terminate when the time expires.
         
         // 2
         saveInBackgroundWithBlock() { (success: Bool, error: NSError?) in
             // 3
-            UIApplication.sharedApplication().endBackgroundTask(self.photoUploadTask!)
+            UIApplication.sharedApplication().endBackgroundTask(self.photoUploadTask!) //marks ending of the long running operation
         }
     }
 }

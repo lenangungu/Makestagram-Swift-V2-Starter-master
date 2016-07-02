@@ -87,9 +87,7 @@ func uploadPost() {
             UIApplication.sharedApplication().endBackgroundTask(self.photoUploadTask!) //marks ending of the long running operation
         }
     }
-}
 
 
-
-
+    }
 }
